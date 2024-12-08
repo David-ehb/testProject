@@ -1,28 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/about', function () {
-    $name = 'David';
-    return view('about', compact('name'));
-})->name('about');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/home', function (){
-    return view('home');
-})->name('home');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
-
-Route::get('contact/{postcode?}', function ($postcode = '1745'){
-    return view('contact', compact('postcode'));
-})->name('contactPostcode');
-
-Route::get('/index', function (){
-    return view('index');
-})->name('index');
+require __DIR__.'/auth.php';
