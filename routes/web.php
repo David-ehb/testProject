@@ -22,3 +22,7 @@ Route::get('/contact', function () {
 Route::get('contact/{postcode?}', function ($postcode = '1745'){
     return view('contact', compact('postcode'));
 })->name('contactPostcode');
+
+Route::get('/index', function (){
+    return view('index');
+})->name('index');
